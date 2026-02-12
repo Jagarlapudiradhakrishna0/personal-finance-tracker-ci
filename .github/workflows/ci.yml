@@ -1,0 +1,147 @@
+name: CI - Modular Personal Finance Tracker
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-dashboard:
+    name: Test Dashboard (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: dashboard/package-lock.json
+
+      - name: Install dependencies
+        working-directory: dashboard
+        run: npm install
+
+      - name: Run tests
+        working-directory: dashboard
+        run: npm test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: dashboard-test-results-node-${{ matrix.node }}
+          path: dashboard/
+
+  test-expenses:
+    name: Test Expenses (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: expenses/package-lock.json
+
+      - name: Install dependencies
+        working-directory: expenses
+        run: npm install
+
+      - name: Run tests
+        working-directory: expenses
+        run: npm test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: expenses-test-results-node-${{ matrix.node }}
+          path: expenses/
+
+  test-income:
+    name: Test Income (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: income/package-lock.json
+
+      - name: Install dependencies
+        working-directory: income
+        run: npm install
+
+      - name: Run tests
+        working-directory: income
+        run: npm test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: income-test-results-node-${{ matrix.node }}
+          path: income/
+
+  build:
+    name: Build Complete Application
+    needs: [test-dashboard, test-expenses, test-income]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install root dependencies
+        run: npm install
+
+      - name: Build dashboard
+        working-directory: dashboard
+        run: npm run build
+
+      - name: Build expenses
+        working-directory: expenses
+        run: npm run build
+
+      - name: Build income
+        working-directory: income
+        run: npm run build
+
+      - name: Run build-all script
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: .
