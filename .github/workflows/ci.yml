@@ -32,7 +32,7 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dashboard-test-results-node-${{ matrix.node }}
           path: dashboard/
@@ -64,7 +64,7 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: expenses-test-results-node-${{ matrix.node }}
           path: expenses/
@@ -96,7 +96,7 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: income-test-results-node-${{ matrix.node }}
           path: income/
@@ -134,7 +134,7 @@ jobs:
         run: npm run build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: .
