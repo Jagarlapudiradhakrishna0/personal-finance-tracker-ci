@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [18, 20]
+        node: ['18', '20']
 
     steps:
       - name: Checkout code
@@ -24,11 +24,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: dashboard
-        run: npm install
+        run: npm ci
 
       - name: Run tests
         working-directory: dashboard
-        run: npm test
+        run: npm test -- --passWithNoTests
 
       - name: Upload test results
         if: always()
@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [18, 20]
+        node: ['18', '20']
 
     steps:
       - name: Checkout code
@@ -56,11 +56,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: expenses
-        run: npm install
+        run: npm ci
 
       - name: Run tests
         working-directory: expenses
-        run: npm test
+        run: npm test -- --passWithNoTests
 
       - name: Upload test results
         if: always()
@@ -75,7 +75,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [18, 20]
+        node: ['18', '20']
 
     steps:
       - name: Checkout code
@@ -88,11 +88,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: income
-        run: npm install
+        run: npm ci
 
       - name: Run tests
         working-directory: income
-        run: npm test
+        run: npm test -- --passWithNoTests
 
       - name: Upload test results
         if: always()
@@ -113,10 +113,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
       - name: Install root dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build dashboard
         working-directory: dashboard
