@@ -21,8 +21,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          cache: npm
-          cache-dependency-path: dashboard/package-lock.json
 
       - name: Install dependencies
         working-directory: dashboard
@@ -55,8 +53,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          cache: npm
-          cache-dependency-path: expenses/package-lock.json
 
       - name: Install dependencies
         working-directory: expenses
@@ -89,8 +85,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          cache: npm
-          cache-dependency-path: income/package-lock.json
 
       - name: Install dependencies
         working-directory: income
@@ -120,7 +114,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Install root dependencies
         run: npm install
